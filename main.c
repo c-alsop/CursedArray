@@ -23,7 +23,7 @@ int main() {
     add_element(genericArray, unum, unsigned int);
     add_element(genericArray, longg, long);
     add_element(genericArray, 123, int);
-    add_element(genericArray, (char *)"i hate this", char *);
+    add_element(genericArray, "i hate this", char *);
     add_element(genericArray, struc, struct bruh);
 
     for (size_t i = 0; i < get_size(genericArray); i++) {

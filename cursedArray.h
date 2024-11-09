@@ -33,7 +33,7 @@ void *__safe_get_element(const GenericArray* genericArray, size_t index, const c
 #define add_element(arr, elm, typ) \
 	do \
 	{ \
-		typeof(elm) __cpy##_LINE_ = elm; \
+		typ __cpy##_LINE_ = elm; \
 		append_element(arr, &__cpy##_LINE_, sizeof(__cpy##_LINE_), TO_STR(typ)); \
 	} while (0) \
 
