@@ -2,50 +2,33 @@
 #include "print.h"
 #include <stdio.h>
 
-void print_char(void* element) {
-    printf("%c", *(char*)element);
-}
+// What are you even doing here...
 
-void print_int(void* element) {
-    printf("%d", *(int*)element);
-}
-
-void print_float(void* element) {
-    printf("%f", *(float*)element);
-}
-
-void print_string(void* element) {
-    printf("%s", *(char**)element);
-}
-
-void print_unsigned_int(void* element) {
-    printf("%u", *(unsigned int*)element);
-}
-
-void print_long(void* element) {
-    printf("%ld", *(long*)element);
-}
-
-void print_unsigned_long(void* element) {
-    printf("%lu", *(unsigned long*)element);
-}
-
-void print_long_long(void* element) {
-    printf("%lld", *(long long*)element);
-}
-
-void print_unsigned_long_long(void* element) {
-    printf("%llu", *(unsigned long long*)element);
-}
-
-void print_double(void* element) {
-    printf("%lf", *(double*)element);
-}
-
-void print_long_double(void* element) {
-    printf("%Lf", *(long double*)element);
-}
-
-void print_default(void) {
-    printf("ERROR: Type Unprintable");
+void print(const GenericArray* genericArray, size_t index) {
+	const char *type = get_element_type(genericArray, index);
+	if (!strcmp(type, "char")) {
+		printf("%c", get_element(genericArray, index, char));
+	} else if (!strcmp(type, "int")) {
+		printf("%d", get_element(genericArray, index, int));
+	} else if (!strcmp(type, "float")) {
+		printf("%f", get_element(genericArray, index, float));
+	} else if (!strcmp(type, "char *")) {
+		printf("%s", get_element(genericArray, index, char *));
+	} else if (!strcmp(type, "unsigned int")) {
+		printf("%u", get_element(genericArray, index, unsigned int));
+	} else if (!strcmp(type, "long")) {
+		printf("%ld", get_element(genericArray, index, long));
+	} else if (!strcmp(type, "unsigned long")) {
+		printf("%lu", get_element(genericArray, index, unsigned long));
+	} else if (!strcmp(type, "long long")) {
+		printf("%lld", get_element(genericArray, index, long long));
+	} else if (!strcmp(type, "unsigned long long")) {
+		printf("%llu", get_element(genericArray, index, unsigned long long));
+	} else if (!strcmp(type, "double")) {
+		printf("%lf", get_element(genericArray, index, double));
+	} else if (!strcmp(type, "long double")) {
+		printf("%Lf", get_element(genericArray, index, long double));
+	} else {
+		printf("Could not print");
+	}
 }

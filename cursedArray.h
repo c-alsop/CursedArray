@@ -1,30 +1,17 @@
 // cursedArray.h
-#include <stddef.h>
 
 #ifndef CURSED_ARRAY_H
 #define CURSED_ARRAY_H
 
-#define append(array, element) _Generic((element), \
-    char*: append_element(array, element, CHAR), \
-    unsigned char*: append_element(array, element, CHAR), \
-    short*: append_element(array, element, INT), \
-    unsigned short*: append_element(array, element, U_INT), \
-    int*: append_element(array, element, INT), \
-    unsigned int*: append_element(array, element, U_INT), \
-    long*: append_element(array, element, LONG), \
-    unsigned long*: append_element(array, element, U_LONG), \
-    long long*: append_element(array, element, LONG_LONG), \
-    unsigned long long*: append_element(array, element, U_LONG_LONG), \
-    float*: append_element(array, element, FLOAT), \
-    double*: append_element(array, element, DOUBLE), \
-    long double*: append_element(array, element, LONG_DOUBLE), \
-    char**: append_element(array, element, STRING), \
-    FILE**: append_element(array, element, FILE_HANDLER), \
-    default: append_element(array, element, OTHER))
+#include <stddef.h>
+#include <string.h>
+
+#define TO_STR(x) #x
 
 typedef struct {
     void* element;
-    int type;
+    size_t size;
+	const char *type;
 } Element;
 
 typedef struct {
@@ -33,25 +20,25 @@ typedef struct {
     size_t capacity;
 } GenericArray;
 
-typedef enum {
-    INT,
-    U_INT,
-    FLOAT,
-    CHAR,
-    STRING,
-    LONG,
-    U_LONG,
-    LONG_LONG,
-    U_LONG_LONG,
-    DOUBLE,
-    LONG_DOUBLE,
-    FILE_HANDLER,
-    OTHER
-} Type;
-
-
 GenericArray* init(void);
 void increase_size(GenericArray* genericArray);
-void append_element(GenericArray* genericArray, void* element, int type);
+void append_element(GenericArray* genericArray, const void* element, size_t size, const char *type);
+
+
+size_t __safe_get_array_size(const GenericArray* genericArray, const char *f, int l);
+const char *__safe_get_element_type(const GenericArray* genericArray, size_t index, const char *f, int l);
+void *__safe_get_element(const GenericArray* genericArray, size_t index, const char *type, const char *f, int l);
+
+#define get_size(arr) __safe_get_array_size((arr), __FILE__, __LINE__)
+#define add_element(arr, elm, typ) \
+	do \
+	{ \
+		typeof(elm) __cpy##_LINE_ = elm; \
+		append_element(arr, &__cpy##_LINE_, sizeof(__cpy##_LINE_), TO_STR(typ)); \
+	} while (0) \
+
+#define get_element_type(arr, idx) __safe_get_element_type((arr), (idx), __FILE__, __LINE__)
+#define get_element(arr, idx, typ) *((typ *)__safe_get_element((arr), (idx), TO_STR(typ), __FILE__, __LINE__))
+#define check_element_type(arr, idx, typ) !strcmp(get_element_type((arr), (idx)), TO_STR(typ))
 
 #endif
