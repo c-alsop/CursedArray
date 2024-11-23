@@ -3,32 +3,32 @@
 #include <stdio.h>
 
 // What are you even doing here...
+// [A few days later] Yeah, wtf is this...
 
 void print(const GenericArray* genericArray, size_t index) {
-	const char *type = get_element_type(genericArray, index);
-	if (!strcmp(type, "char")) {
-		printf("%c", get_element(genericArray, index, char));
-	} else if (!strcmp(type, "int")) {
-		printf("%d", get_element(genericArray, index, int));
-	} else if (!strcmp(type, "float")) {
-		printf("%f", get_element(genericArray, index, float));
-	} else if (!strcmp(type, "char *")) {
-		printf("%s", get_element(genericArray, index, char *));
-	} else if (!strcmp(type, "unsigned int")) {
-		printf("%u", get_element(genericArray, index, unsigned int));
-	} else if (!strcmp(type, "long")) {
-		printf("%ld", get_element(genericArray, index, long));
-	} else if (!strcmp(type, "unsigned long")) {
-		printf("%lu", get_element(genericArray, index, unsigned long));
-	} else if (!strcmp(type, "long long")) {
-		printf("%lld", get_element(genericArray, index, long long));
-	} else if (!strcmp(type, "unsigned long long")) {
-		printf("%llu", get_element(genericArray, index, unsigned long long));
-	} else if (!strcmp(type, "double")) {
-		printf("%lf", get_element(genericArray, index, double));
-	} else if (!strcmp(type, "long double")) {
-		printf("%Lf", get_element(genericArray, index, long double));
+	if (GA_is_type(genericArray, index, char)) {
+		printf("%c", GA_get(genericArray, index, char));
+	} else if (GA_is_type(genericArray, index, int)) {
+		printf("%d", GA_get(genericArray, index, int));
+	} else if (GA_is_type(genericArray, index, float)) {
+		printf("%f", GA_get(genericArray, index, float));
+	} else if (GA_is_type(genericArray, index, char *)) {
+		printf("%s", GA_get(genericArray, index, char *));
+	} else if (GA_is_type(genericArray, index, unsigned int)) {
+		printf("%u", GA_get(genericArray, index, unsigned int));
+	} else if (GA_is_type(genericArray, index, long)) {
+		printf("%ld", GA_get(genericArray, index, long));
+	} else if (GA_is_type(genericArray, index, unsigned long)) {
+		printf("%lu", GA_get(genericArray, index, unsigned long));
+	} else if (GA_is_type(genericArray, index, long long)) {
+		printf("%lld", GA_get(genericArray, index, long long));
+	} else if (GA_is_type(genericArray, index, unsigned long long)) {
+		printf("%llu", GA_get(genericArray, index, unsigned long long));
+	} else if (GA_is_type(genericArray, index, double)) {
+		printf("%lf", GA_get(genericArray, index, double));
+	} else if (GA_is_type(genericArray, index, long double)) {
+		printf("%Lf", GA_get(genericArray, index, long double));
 	} else {
-		printf("Could not print");
+		printf("Could not print variables of type \"%s\"", GA_type(genericArray, index));
 	}
 }

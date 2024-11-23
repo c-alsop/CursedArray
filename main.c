@@ -5,36 +5,37 @@
 
 
 int main() {
-    GenericArray* genericArray = init();
+	GenericArray* genericArray = GA_new();
 
-    //Testing
-    int num = 5;
-    float othernum = 7;
-    char c = 'h';
-    char* str = "hello world";
-    unsigned int unum = 100;
-    long longg = 500000;
+	//Testing
+	int num = 5;
+	float othernum = 7;
+	char c = 'h';
+	char* str = "hello world";
+	unsigned int unum = 100;
+	long longg = 500000;
 	struct bruh { int num; char *str; } struc = { 10, "ten" };
 
-    add_element(genericArray, num, int);
-    add_element(genericArray, othernum, float);
-    add_element(genericArray, c, char);
-    add_element(genericArray, str, char *);
-    add_element(genericArray, unum, unsigned int);
-    add_element(genericArray, longg, long);
-    add_element(genericArray, 123, int);
-    add_element(genericArray, "i hate this", char *);
-    add_element(genericArray, struc, struct bruh);
+	GA_add(genericArray, num, int);
+	GA_add(genericArray, othernum, float);
+	GA_add(genericArray, c, char);
+	GA_add(genericArray, str, char *);
+	GA_add(genericArray, unum, unsigned int);
+	GA_add(genericArray, longg, long);
+	GA_add(genericArray, 123, int);
+	GA_add(genericArray, "i hate this", char *);
+	GA_add(genericArray, struc, struct bruh);
 
-    for (size_t i = 0; i < get_size(genericArray); i++) {
+	for (size_t i = 0; i < GA_size(genericArray); i++) {
 		print(genericArray, i);
-        printf("\n");
-    }
+		printf("\n");
+	}
 
-	printf("genericArray[0] = %d\n", get_element(genericArray, 0, int));
-	struct bruh thing = get_element(genericArray, 8, struct bruh);
+	printf("genericArray[0] = %d\n", GA_get(genericArray, 0, int));
+	struct bruh thing = GA_get(genericArray, 8, struct bruh);
 	printf("genericArray[8] = { %d, \"%s\" }\n", thing.num, thing.str);
-	printf("genericArray[1] = %d\n", get_element(genericArray, 1, int));
+	// printf("genericArray[1] = %d\n", GA_get(genericArray, 1, int));
+	GA_delete(genericArray);
 
-    return 0;
+	return 0;
 }

@@ -8,37 +8,43 @@
 
 #define TO_STR(x) #x
 
+#define EXARG const char *f, int l
+#define EXVAL f, l
+#define EXDEF __FILE__, __LINE__
+
 typedef struct {
-    void* element;
-    size_t size;
+	void* element;
+	size_t size;
 	const char *type;
 } Element;
 
 typedef struct {
-    Element** array;
-    size_t size;
-    size_t capacity;
+	Element** array;
+	size_t size;
+	size_t capacity;
 } GenericArray;
 
-GenericArray* init(void);
-void increase_size(GenericArray* genericArray);
-void append_element(GenericArray* genericArray, const void* element, size_t size, const char *type);
+size_t __safe_GA_size(const GenericArray* genericArray, EXARG);
+void __safe_GA_add(GenericArray* genericArray, const void* element, size_t size, const char *type, EXARG);
+void *__safe_GA_get(const GenericArray* genericArray, size_t index, const char *type, EXARG);
+const char *__safe_GA_type(const GenericArray* genericArray, size_t index, EXARG);
+void __safe_GA_clear(GenericArray *genericArray, EXARG);
+void __safe_GA_delete(GenericArray **genericArray, EXARG);
 
-
-size_t __safe_get_array_size(const GenericArray* genericArray, const char *f, int l);
-const char *__safe_get_element_type(const GenericArray* genericArray, size_t index, const char *f, int l);
-void *__safe_get_element(const GenericArray* genericArray, size_t index, const char *type, const char *f, int l);
-
-#define get_size(arr) __safe_get_array_size((arr), __FILE__, __LINE__)
-#define add_element(arr, elm, typ) \
+GenericArray* GA_new(void);
+#define GA_size(arr) __safe_GA_size((arr), EXDEF)
+#define GA_add(arr, elm, typ) \
 	do \
 	{ \
 		typ __cpy##_LINE_ = elm; \
-		append_element(arr, &__cpy##_LINE_, sizeof(__cpy##_LINE_), TO_STR(typ)); \
-	} while (0) \
+		__safe_GA_add(arr, &__cpy##_LINE_, sizeof(__cpy##_LINE_), TO_STR(typ), EXDEF); \
+	} while (0)
+#define GA_get(arr, idx, typ) *((typ *)__safe_GA_get((arr), (idx), TO_STR(typ), EXDEF))
+#define GA_type(arr, idx) __safe_GA_type((arr), (idx), EXDEF)
+#define GA_is_type(arr, idx, typ) !strcmp(GA_type((arr), (idx)), TO_STR(typ))
+#define GA_clear(arr) __safe_GA_clear((arr), EXDEF)
 
-#define get_element_type(arr, idx) __safe_get_element_type((arr), (idx), __FILE__, __LINE__)
-#define get_element(arr, idx, typ) *((typ *)__safe_get_element((arr), (idx), TO_STR(typ), __FILE__, __LINE__))
-#define check_element_type(arr, idx, typ) !strcmp(get_element_type((arr), (idx)), TO_STR(typ))
+// Won't work if it's in a register, but nobody uses registers these days...
+#define GA_delete(arr) __safe_GA_delete(&(arr), EXDEF)
 
 #endif
